@@ -42,7 +42,7 @@
                     <Button Margin="3,370,215,75" Content="Pin Image" BorderThickness="1" FontSize="15" Click="Button_Click_3"/>
                     <TextBlock Margin="0,305,215,160" Text="Text"/>
 
-                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="75" Margin="-12,0,0,0" VerticalAlignment="Bottom" Width="432" Keywords="image"/>
+                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="75" Margin="-12,0,0,0" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol1"/>
 
                 </Grid>
                 <!--Double line list with text wrapping-->
@@ -73,7 +73,7 @@
                     <Button Margin="16,380,202,65" Content="Pin Image" BorderThickness="1" FontSize="15" Click="Button_Click_32"/>
                     <TextBlock Margin="27,352,188,113" Text="Text"/>
                     <Button Margin="230,99,-11,346" Content="Load Wide Image" BorderThickness="1" FontSize="15" Click="Button_Click_12"/>
-                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="74" Margin="-12,0,0,0" VerticalAlignment="Bottom" Width="432" Keywords="image"/>
+                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125353" HorizontalAlignment="Left" Height="74" Margin="-12,0,0,0" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol2"/>
                 </Grid>
             </controls:PanoramaItem>
         </controls:Panorama>
