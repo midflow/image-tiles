@@ -151,6 +151,7 @@ namespace Image_Tiles
             }
         }
 
+       
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             PhotoChooserTask photoChooserTask;
@@ -361,6 +362,22 @@ namespace Image_Tiles
             PhotoChooserTask photoChooserTask;
             photoChooserTask = new PhotoChooserTask();
             photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask1_Completed);
+            photoChooserTask.Show();
+        }
+
+        private void StackPanel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PhotoChooserTask photoChooserTask;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask1_Completed);
+            photoChooserTask.Show();
+        }        
+
+        private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PhotoChooserTask photoChooserTask;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask_Completed);
             photoChooserTask.Show();
         }
     }
