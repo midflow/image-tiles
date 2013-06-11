@@ -18,7 +18,7 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
     shell:SystemTray.IsVisible="False">
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
-            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/pin.png" Text="Pin"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/pin.png" Text="Pin" Click="ApplicationBarIconButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
@@ -26,7 +26,7 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
         <!--Panorama control-->
-        <controls:Panorama Title="Image Tiles">
+        <controls:Panorama Title="Image Tiles" Name="pnmImage">
             <controls:Panorama.Background>
                 <ImageBrush ImageSource="PanoramaBackground.png"/>
             </controls:Panorama.Background>
@@ -64,19 +64,17 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
                         
                     </Border>-->
 
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="105" VerticalAlignment="Top" Width="105" Cursor="Hand" Grid.Column="1" Grid.Row="0" Margin="17,0,0,0">
+                    <Button HorizontalAlignment="Left" Height="136" VerticalAlignment="Top" Width="146" Cursor="Hand" Grid.Column="1" Grid.Row="0" Margin="17,0,0,0" Tap="Button_Tap_1">
                         <Image HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="105" Stretch="UniformToFill" x:Name="imgMedium"  Margin="-2,-1,0,-1" Grid.Column="1" Grid.Row="0"/>
-                    </Border>
+                    </Button>
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="Wide Image"  />
                     <TextBlock Grid.Column="1" Grid.Row="1" Text="Medium Image"  />
                     <TextBlock  Text="Text" Grid.Column="0" Grid.Row="2"/>
-                    <TextBox x:Name="txtImgtext" ToolTipService.ToolTip="Put Image text here" Grid.Column="1" Grid.Row="2" />
+                    <TextBox x:Name="txtImgtext" ToolTipService.ToolTip="Put Image text here" Grid.Column="1" Grid.Row="2" FontSize="16" />
 
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="Animation" />
-                    <Controls:ToggleSwitch x:Name="blAnimation"  Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top"  Grid.Column="1" Grid.Row="3"  />
-
-                    <Button  Content="Pin Image" BorderThickness="1" FontSize="15" Click="Button_Click_3" Grid.Column="0" Grid.Row="4"/>
-                    <UI:AdControl  ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="75" Margin="0,0,-82,-80" VerticalAlignment="Bottom" Width="420" Keywords="image" IsAutoRefreshEnabled="true" Name="adcontrol1" Grid.ColumnSpan="2" Grid.Row="5" />
+                    <Controls:ToggleSwitch x:Name="blAnimation"  Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top"  Grid.Column="1" Grid.Row="3" IsChecked="true"  />
+                    <UI:AdControl  ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="75" Margin="0,0,-37,-56" VerticalAlignment="Bottom" Width="420" Keywords="image" IsAutoRefreshEnabled="true" Name="adcontrol1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="2" />
 
 
                 </Grid>
@@ -93,31 +91,41 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
                         <GradientStop Color="#FF63A5BB"/>
                     </RadialGradientBrush>
                 </controls:PanoramaItem.Background>
-                <Grid>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="215" Cursor="Hand">
-                        <Image HorizontalAlignment="Right" Height="105"  VerticalAlignment="Top" Width="215" Margin="1,2,0,0" Stretch="UniformToFill" x:Name="imgWide2" >
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="222" />
+                        <ColumnDefinition Width="Auto" MinWidth="214" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="125" />
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="Auto"  />
 
+                    </Grid.RowDefinitions>
+
+                    <Button x:Name="btnWide21" HorizontalAlignment="Right" Height="125" VerticalAlignment="Top" Width="205" Cursor="Hand" Tap="btnWide21_Tap" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0,0,12,0" >
+                        <Image HorizontalAlignment="Right" Height="100"  VerticalAlignment="Top" Width="180"  Stretch="UniformToFill" x:Name="imgWide1" Grid.Row="0" Grid.Column="0"  />
+                    </Button>
+                    <Button x:Name="btnWide22" Padding="0"  HorizontalAlignment="left" Height="125" VerticalAlignment="Top" Width="205" Cursor="Hand" Tap="btnWide22_Tap" Grid.Row="0" Grid.Column="1" >
+                        <Image HorizontalAlignment="left" Height="100"  VerticalAlignment="Top" Width="180" Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" x:Name="imgWide2" >
                         </Image>
-                    </Border>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="205" Cursor="Hand" Margin="0,0,215,0">
-                        <Image HorizontalAlignment="Right" Height="105"  VerticalAlignment="Top" Width="204"  Stretch="UniformToFill" x:Name="imgWide1" Margin="0,0,0,-2" />
-                    </Border>
-                    <TextBox x:Name="txtImgtext2" Margin="213,338,18,103" ToolTipService.ToolTip="Put Imaga text here" />
-                    <Button Margin="15,99,204,346" Content="Load Wide Image" BorderThickness="1" FontSize="15" Click="Button_Click_11"/>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="105" Margin="100,157,0,0" VerticalAlignment="Top" Width="105" Cursor="Hand">
-                        <Image HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="105" Stretch="UniformToFill" x:Name="imgMedium1"  Margin="-1"/>
-                    </Border>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="105" Margin="300,157,0,0" VerticalAlignment="Top" Width="105" Cursor="Hand">
+                    </Button>
+
+                    <Button x:Name="btnMedium21"  HorizontalAlignment="Left" Height="136" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Top" Width="145" Cursor="Hand" Tap="btnMedium21_Tap" Grid.RowSpan="2">
+                        <Image HorizontalAlignment="Right" Height="105" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Width="105" Stretch="UniformToFill" x:Name="imgMedium1"/>
+                    </Button>
+                    <Button x:Name="bntMedium22"  HorizontalAlignment="Left" Height="136" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Width="146" Cursor="Hand" Tap="bntMedium22_Tap" Grid.RowSpan="2">
                         <Image HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="105" Stretch="UniformToFill" x:Name="imgMedium2"  Margin="-1"/>
-                    </Border>
-                    <TextBlock Text="Animation" Margin="30,310,185,155" />
-                    <Button Margin="15,260,203,185" Content="Load Medium Image" BorderThickness="1" FontSize="15" Click="Button_Click_21"/>
-                    <Button Margin="215,260,3,185" Content="Load Medium Image" BorderThickness="1" FontSize="15" Click="Button_Click_22"/>
-                    <Controls:ToggleSwitch x:Name="blAnimation2" Margin="208,299,70,0" Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top" />
-                    <Button Margin="16,380,202,65" Content="Pin Image" BorderThickness="1" FontSize="15" Click="Button_Click_32"/>
-                    <TextBlock Margin="27,352,188,113" Text="Text"/>
-                    <Button Margin="230,99,-11,346" Content="Load Wide Image" BorderThickness="1" FontSize="15" Click="Button_Click_12"/>
-                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125353" HorizontalAlignment="Left" Height="74" Margin="-12,0,0,0" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol2"/>
+                    </Button>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Text"/>
+                    <TextBox x:Name="txtImgtext2" ToolTipService.ToolTip="Put Imaga text here" Grid.Row="2" Grid.Column="1" FontSize="16"/>
+                    <TextBlock Text="Animation" Grid.Row="3" Grid.Column="0" />
+                    <Controls:ToggleSwitch x:Name="blAnimation2" Grid.Row="3" Grid.Column="1" Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top" Grid.RowSpan="2" IsChecked="true" />
+
+                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125353" HorizontalAlignment="Left" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol2"/>
                 </Grid>
             </controls:PanoramaItem>
         </controls:Panorama>

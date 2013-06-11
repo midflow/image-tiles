@@ -94,6 +94,7 @@
     </DesignData>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ImageTiles.ini" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
