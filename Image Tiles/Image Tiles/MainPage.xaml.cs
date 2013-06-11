@@ -14,6 +14,7 @@ using Microsoft.Phone.Tasks;
 using System.Windows.Media.Imaging;
 using System.IO.IsolatedStorage;
 using Microsoft.Phone.Shell;
+using System.IO;
 
 namespace Image_Tiles
 {
@@ -38,6 +39,94 @@ namespace Image_Tiles
             if (!App.ViewModel.IsDataLoaded)
             {
                 App.ViewModel.LoadData();
+            }
+
+            LoadTile();
+        }
+
+        private void LoadTile()
+        {
+            try
+            {
+                Dictionary<string,string> dic = new Dictionary<string,string>();
+                IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
+                if (myIsolatedStorage.FileExists("ImageTiles.ini"))
+                {
+                    IsolatedStorageFileStream fileStream = myIsolatedStorage.OpenFile("ImageTiles.ini", FileMode.Open, FileAccess.Read);
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {    
+                        while (!reader.EndOfStream)
+                        {
+                            string strFileContent = reader.ReadLine();
+                            string[] linecontent = strFileContent.Split(' ');
+                            dic.Add(linecontent[0],linecontent[1]);
+                            //MessageBox.Show(strFileContent);
+                        }
+
+                        //set value to app
+                        if (dic.ContainsKey("PanoramaIndex"))
+                        {
+                            int pnmIndex = int.Parse(dic["PanoramaIndex"]);
+                            pnmImage.DefaultItem = pnmImage.Items[pnmIndex];
+
+                            if (pnmIndex == 0)
+                            {
+                                txtImgtext.Text = dic["Title"];
+                                ImageSource imgSource;
+                                Uri uri;
+
+                                uri = new Uri(dic["BackgroundImage"], UriKind.Absolute);
+                                imgSource = new BitmapImage(uri);
+                                imgMedium.Source = imgSource;
+
+                                uri = new Uri(dic["WideBackgroundImage"], UriKind.Absolute);
+                                imgSource = new BitmapImage(uri);
+                                imgWide.Source = imgSource;
+
+                                blAnimation.IsChecked = bool.Parse(dic["Animation"]);                                
+                            }
+                            else
+                            {
+                                txtImgtext2.Text = dic["Title"];
+                                ImageSource imgSource;
+                                Uri uri;
+
+                                uri = new Uri(dic["BackgroundImage"], UriKind.Absolute);
+                                imgSource = new BitmapImage(uri);
+                                imgMedium1.Source = imgSource;
+
+                                uri = new Uri(dic["WideBackgroundImage"], UriKind.Absolute);
+                                imgSource = new BitmapImage(uri);
+                                imgWide1.Source = imgSource;
+
+                                blAnimation2.IsChecked = bool.Parse(dic["Animation"]);
+
+                                if (blAnimation2.IsChecked==true)
+                                {
+                                    uri = new Uri(dic["BackBackgroundImage"], UriKind.Absolute);
+                                    imgSource = new BitmapImage(uri);
+                                    imgMedium2.Source = imgSource;
+
+                                    uri = new Uri(dic["WideBackBackgroundImage"], UriKind.Absolute);
+                                    imgSource = new BitmapImage(uri);
+                                    imgWide2.Source = imgSource;
+                                }
+                            }
+
+                        }
+
+                        
+
+                    }
+                }
+                else
+                {
+                    IsolatedStorageFileStream fileStream = myIsolatedStorage.OpenFile("ImageTiles.ini", FileMode.Create, FileAccess.Write);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -151,227 +240,11 @@ namespace Image_Tiles
             }
         }
 
-       
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask_Completed);
-            photoChooserTask.Show();
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask_Completed);
-            photoChooserTask.Show();
-        }
-        private void Button_Click_32(object sender, RoutedEventArgs e)
-        {
-            // Create the tile if we didn't find it already exists.
-            // Create the tile object and set some initial properties for the tile.
-            // The Count value of 12 will show the number 12 on the front of the Tile. Valid values are 1-99.
-            // A Count value of 0 will indicate that the Count should not be displayed.
-            //var uri = new Uri("WP_000725.jpg", UriKind.Absolute);
-            if (IsTargetedVersion)
-            {
-
-                // Get the new FlipTileData type.
-                Type flipTileDataType = Type.GetType("Microsoft.Phone.Shell.FlipTileData, Microsoft.Phone");
-
-                // Get the ShellTile type so we can call the new version of "Update" that takes the new Tile templates.
-                Type shellTileType = Type.GetType("Microsoft.Phone.Shell.ShellTile, Microsoft.Phone");
-
-                // Loop through any existing Tiles that are pinned to Start.
-                var tileToUpdate = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("MainPage.xaml"));
-                // Get the constructor for the new FlipTileData class and assign it to our variable to hold the Tile properties.
-                var UpdateTileData = flipTileDataType.GetConstructor(new Type[] { }).Invoke(null);
-
-                // Set the properties. 
-                SetProperty(UpdateTileData, "Title", txtImgtext2.Text);
-                //SetProperty(UpdateTileData, "Count", 12);
-                //SetProperty(UpdateTileData, "BackTitle", "Back Tile Title");
-                //SetProperty(UpdateTileData, "BackContent", "Content For back tile.");
-                SetProperty(UpdateTileData, "SmallBackgroundImage", new Uri("isostore:/Shared/ShellContent/medium1.jpg", UriKind.Absolute));
-                SetProperty(UpdateTileData, "BackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium1.jpg", UriKind.Absolute));
-                SetProperty(UpdateTileData, "WideBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide1.jpg", UriKind.Absolute));
-                if (blAnimation2.IsChecked == true)
-                {
-                    SetProperty(UpdateTileData, "BackBackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium2.jpg", UriKind.Absolute));
-                    SetProperty(UpdateTileData, "WideBackBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide2.jpg", UriKind.Absolute));
-                }
-
-                if (tileToUpdate == null)
-                {
-                    Uri tilesUri = new Uri("/MainPage.xaml", UriKind.Relative);
-                    ShellTileExt.Create(tilesUri, (ShellTileData)UpdateTileData, true);
-                }
-                else
-                {
-                    // Invoke the new version of ShellTile.Update.
-                    shellTileType.GetMethod("Update").Invoke(tileToUpdate, new Object[] { UpdateTileData });
-                    MessageBox.Show("Your Image Tiles is updated");
-                }
-
-            }
-            else
-            {
-                ShellTile TileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("MainPage.xaml"));
-                StandardTileData NewTileData = new StandardTileData
-                {
-                    BackgroundImage = new Uri("isostore:/Shared/ShellContent/medium1.jpg", UriKind.Absolute),
-                    Title = txtImgtext.Text,
-                    Count = 0,
-                };
-
-                if (blAnimation2.IsChecked == true)
-                {
-                    NewTileData.BackBackgroundImage = new Uri("isostore:/Shared/ShellContent/medium2.jpg", UriKind.Absolute);
-                }
-
-
-                if (TileToFind == null)
-                {
-                    // Create the tile and pin it to Start. This will cause a navigation to Start and a deactivation of our application.
-                    Uri tilesUri = new Uri("/MainPage.xaml", UriKind.Relative);
-                    ShellTile.Create(tilesUri, NewTileData);
-                }
-                else
-                {
-
-                    TileToFind.Update(NewTileData);
-                    MessageBox.Show("Your Image Tiles is updated");
-                }
-
-            }
-        }
         private static void SetProperty(object instance, string name, object value)
         {
             var setMethod = instance.GetType().GetProperty(name).GetSetMethod();
             setMethod.Invoke(instance, new object[] { value });
         }
-
-        private void Button_Click_12(object sender, RoutedEventArgs e)
-        {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask2_Completed);
-            photoChooserTask.Show();
-        }
-
-        private void Button_Click_21(object sender, RoutedEventArgs e)
-        {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask1_Completed);
-            photoChooserTask.Show();
-        }
-
-        private void Button_Click_22(object sender, RoutedEventArgs e)
-        {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask2_Completed);
-            photoChooserTask.Show();
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            // Create the tile if we didn't find it already exists.
-            // Create the tile object and set some initial properties for the tile.
-            // The Count value of 12 will show the number 12 on the front of the Tile. Valid values are 1-99.
-            // A Count value of 0 will indicate that the Count should not be displayed.
-            //var uri = new Uri("WP_000725.jpg", UriKind.Absolute);
-            if (IsTargetedVersion)
-            {
-
-                // Get the new FlipTileData type.
-                Type flipTileDataType = Type.GetType("Microsoft.Phone.Shell.FlipTileData, Microsoft.Phone");
-
-                // Get the ShellTile type so we can call the new version of "Update" that takes the new Tile templates.
-                Type shellTileType = Type.GetType("Microsoft.Phone.Shell.ShellTile, Microsoft.Phone");
-
-                // Loop through any existing Tiles that are pinned to Start.
-                var tileToUpdate = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("MainPage.xaml"));
-                // Get the constructor for the new FlipTileData class and assign it to our variable to hold the Tile properties.
-                var UpdateTileData = flipTileDataType.GetConstructor(new Type[] { }).Invoke(null);
-
-                // Set the properties. 
-                SetProperty(UpdateTileData, "Title", txtImgtext.Text);
-                //SetProperty(UpdateTileData, "Count", 12);
-                //SetProperty(UpdateTileData, "BackTitle", "Back Tile Title");
-                //SetProperty(UpdateTileData, "BackContent", "Content For back tile.");
-                SetProperty(UpdateTileData, "SmallBackgroundImage", new Uri("isostore:/Shared/ShellContent/medium.jpg", UriKind.Absolute));
-                SetProperty(UpdateTileData, "BackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium.jpg", UriKind.Absolute));
-                SetProperty(UpdateTileData, "WideBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide.jpg", UriKind.Absolute));
-                if (blAnimation.IsChecked == true)
-                {
-                    SetProperty(UpdateTileData, "BackBackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium.jpg", UriKind.Absolute));
-                    SetProperty(UpdateTileData, "WideBackBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide.jpg", UriKind.Absolute));
-                }
-
-                if (tileToUpdate == null)
-                {
-                    Uri tilesUri = new Uri("/MainPage.xaml", UriKind.Relative);
-                    ShellTileExt.Create(tilesUri, (ShellTileData)UpdateTileData, true);
-                }
-                else
-                {
-                    // Invoke the new version of ShellTile.Update.
-                    shellTileType.GetMethod("Update").Invoke(tileToUpdate, new Object[] { UpdateTileData });
-                    MessageBox.Show("Your Image Tiles is updated");
-                }
-
-            }
-            else
-            {
-                ShellTile TileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("MainPage.xaml"));
-                StandardTileData NewTileData = new StandardTileData
-                {
-                    BackgroundImage = new Uri("isostore:/Shared/ShellContent/medium.jpg", UriKind.Absolute),
-                    Title = txtImgtext.Text,
-                    Count = 0,
-                };
-
-                if (blAnimation.IsChecked == true)
-                {
-                    NewTileData.BackBackgroundImage = new Uri("isostore:/Shared/ShellContent/medium.jpg", UriKind.Absolute);
-                }
-
-
-                if (TileToFind == null)
-                {
-                    // Create the tile and pin it to Start. This will cause a navigation to Start and a deactivation of our application.
-                    Uri tilesUri = new Uri("/MainPage.xaml", UriKind.Relative);
-                    ShellTile.Create(tilesUri, NewTileData);
-                }
-                else
-                {
-
-                    TileToFind.Update(NewTileData);
-                    MessageBox.Show("Your Image Tiles is updated");
-                }
-
-            }
-
-        }
-
-        private void Button_Click_11(object sender, RoutedEventArgs e)
-        {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask1_Completed);
-            photoChooserTask.Show();
-        }
-
-        private void StackPanel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask1_Completed);
-            photoChooserTask.Show();
-        }        
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -379,6 +252,272 @@ namespace Image_Tiles
             photoChooserTask = new PhotoChooserTask();
             photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask_Completed);
             photoChooserTask.Show();
+        }
+
+        private void Button_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PhotoChooserTask photoChooserTask;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask_Completed);
+            photoChooserTask.Show();
+        }
+
+        private void btnWide21_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PhotoChooserTask photoChooserTask;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask1_Completed);
+            photoChooserTask.Show();
+        }
+
+        private void btnWide22_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PhotoChooserTask photoChooserTask;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask2_Completed);
+            photoChooserTask.Show();
+        }
+
+        private void btnMedium21_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PhotoChooserTask photoChooserTask;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask1_Completed);
+            photoChooserTask.Show();
+        }
+
+        private void bntMedium22_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PhotoChooserTask photoChooserTask;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask2_Completed);
+            photoChooserTask.Show();
+        }
+
+        private void ApplicationBarIconButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string strFileContent = "";
+                if (pnmImage.SelectedIndex == 0)
+                {
+                    // Create the tile if we didn't find it already exists.
+                    // Create the tile object and set some initial properties for the tile.
+                    // The Count value of 12 will show the number 12 on the front of the Tile. Valid values are 1-99.
+                    // A Count value of 0 will indicate that the Count should not be displayed.
+                    //var uri = new Uri("WP_000725.jpg", UriKind.Absolute);
+                    if (IsTargetedVersion)
+                    {
+
+                        // Get the new FlipTileData type.
+                        Type flipTileDataType = Type.GetType("Microsoft.Phone.Shell.FlipTileData, Microsoft.Phone");
+
+                        // Get the ShellTile type so we can call the new version of "Update" that takes the new Tile templates.
+                        Type shellTileType = Type.GetType("Microsoft.Phone.Shell.ShellTile, Microsoft.Phone");
+
+                        // Loop through any existing Tiles that are pinned to Start.
+                        var tileToUpdate = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("MainPage.xaml"));
+                        // Get the constructor for the new FlipTileData class and assign it to our variable to hold the Tile properties.
+                        var UpdateTileData = flipTileDataType.GetConstructor(new Type[] { }).Invoke(null);
+
+                        // Set the properties. 
+                        SetProperty(UpdateTileData, "Title", txtImgtext.Text);
+                        //SetProperty(UpdateTileData, "Count", 12);
+                        //SetProperty(UpdateTileData, "BackTitle", "Back Tile Title");
+                        //SetProperty(UpdateTileData, "BackContent", "Content For back tile.");
+                        SetProperty(UpdateTileData, "SmallBackgroundImage", new Uri("isostore:/Shared/ShellContent/medium.jpg", UriKind.Absolute));
+                        SetProperty(UpdateTileData, "BackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium.jpg", UriKind.Absolute));
+                        SetProperty(UpdateTileData, "WideBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide.jpg", UriKind.Absolute));
+
+                        strFileContent += "PanoramaIndex 0 \r\n";
+                        strFileContent += "Title " + txtImgtext.Text + "\r\n";
+                        strFileContent += "SmallBackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
+                        strFileContent += "BackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
+                        strFileContent += "WideBackgroundImage isostore://Shared//ShellContent//wide.jpg \r\n";
+                        strFileContent += "Animation " + blAnimation.IsChecked.ToString() + "\r\n";
+                        if (blAnimation.IsChecked == true)
+                        {
+                            SetProperty(UpdateTileData, "BackBackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium.jpg", UriKind.Absolute));
+                            SetProperty(UpdateTileData, "WideBackBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide.jpg", UriKind.Absolute));
+
+                            strFileContent += "BackBackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
+                            strFileContent += "WideBackBackgroundImage isostore://Shared//ShellContent//wide.jpg \r\n";
+
+                        }
+
+                        if (tileToUpdate == null)
+                        {
+                            Uri tilesUri = new Uri("/MainPage.xaml", UriKind.Relative);
+                            ShellTileExt.Create(tilesUri, (ShellTileData)UpdateTileData, true);
+                        }
+                        else
+                        {
+                            // Invoke the new version of ShellTile.Update.
+                            shellTileType.GetMethod("Update").Invoke(tileToUpdate, new Object[] { UpdateTileData });
+                            MessageBox.Show("Your Image Tiles is updated");
+                        }
+
+                        WriteToFile(strFileContent);
+
+                    }
+                    else
+                    {
+                        ShellTile TileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("MainPage.xaml"));
+                        StandardTileData NewTileData = new StandardTileData
+                        {
+                            BackgroundImage = new Uri("isostore:/Shared/ShellContent/medium.jpg", UriKind.Absolute),
+                            Title = txtImgtext.Text,
+                            Count = 0,
+                        };
+
+                        strFileContent += "PanoramaIndex 0 \r\n";
+                        strFileContent += "Title " + txtImgtext.Text + "\r\n";
+                        strFileContent += "BackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
+                        strFileContent += "Animation " + blAnimation.IsChecked.ToString() + "\r\n";
+                        if (blAnimation.IsChecked == true)
+                        {
+                            NewTileData.BackBackgroundImage = new Uri("isostore:/Shared/ShellContent/medium.jpg", UriKind.Absolute);
+                            strFileContent += "BackBackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
+                        }
+
+
+                        if (TileToFind == null)
+                        {
+                            // Create the tile and pin it to Start. This will cause a navigation to Start and a deactivation of our application.
+                            Uri tilesUri = new Uri("/MainPage.xaml", UriKind.Relative);
+                            ShellTile.Create(tilesUri, NewTileData);
+                        }
+                        else
+                        {
+                            TileToFind.Update(NewTileData);
+                            MessageBox.Show("Your Image Tiles is updated");
+                        }                        
+                    }
+
+                }
+                else
+                {
+                    // Create the tile if we didn't find it already exists.
+                    // Create the tile object and set some initial properties for the tile.
+                    // The Count value of 12 will show the number 12 on the front of the Tile. Valid values are 1-99.
+                    // A Count value of 0 will indicate that the Count should not be displayed.
+                    //var uri = new Uri("WP_000725.jpg", UriKind.Absolute);
+                    if (IsTargetedVersion)
+                    {
+
+                        // Get the new FlipTileData type.
+                        Type flipTileDataType = Type.GetType("Microsoft.Phone.Shell.FlipTileData, Microsoft.Phone");
+
+                        // Get the ShellTile type so we can call the new version of "Update" that takes the new Tile templates.
+                        Type shellTileType = Type.GetType("Microsoft.Phone.Shell.ShellTile, Microsoft.Phone");
+
+                        // Loop through any existing Tiles that are pinned to Start.
+                        var tileToUpdate = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("MainPage.xaml"));
+                        // Get the constructor for the new FlipTileData class and assign it to our variable to hold the Tile properties.
+                        var UpdateTileData = flipTileDataType.GetConstructor(new Type[] { }).Invoke(null);
+
+                        // Set the properties. 
+                        SetProperty(UpdateTileData, "Title", txtImgtext2.Text);
+                        //SetProperty(UpdateTileData, "Count", 12);
+                        //SetProperty(UpdateTileData, "BackTitle", "Back Tile Title");
+                        //SetProperty(UpdateTileData, "BackContent", "Content For back tile.");
+                        SetProperty(UpdateTileData, "SmallBackgroundImage", new Uri("isostore:/Shared/ShellContent/medium1.jpg", UriKind.Absolute));
+                        SetProperty(UpdateTileData, "BackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium1.jpg", UriKind.Absolute));
+                        SetProperty(UpdateTileData, "WideBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide1.jpg", UriKind.Absolute));
+
+                        strFileContent += "PanoramaIndex 1 \r\n";
+                        strFileContent += "Title " + txtImgtext2.Text + "\r\n";
+                        strFileContent += "SmallBackgroundImage isostore://Shared//ShellContent//medium1.jpg \r\n";
+                        strFileContent += "BackgroundImage isostore://Shared//ShellContent//medium1.jpg \r\n";
+                        strFileContent += "WideBackgroundImage isostore://Shared//ShellContent//wide1.jpg \r\n";
+                        strFileContent += "Animation " + blAnimation.IsChecked.ToString() + "\r\n";
+
+                        if (blAnimation2.IsChecked == true)
+                        {
+                            SetProperty(UpdateTileData, "BackBackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium2.jpg", UriKind.Absolute));
+                            SetProperty(UpdateTileData, "WideBackBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide2.jpg", UriKind.Absolute));
+
+                            strFileContent += "BackBackgroundImage isostore://Shared//ShellContent//medium2.jpg \r\n";
+                            strFileContent += "WideBackBackgroundImage isostore://Shared//ShellContent//wide2.jpg \r\n";
+
+                        }
+
+                        if (tileToUpdate == null)
+                        {
+                            Uri tilesUri = new Uri("/MainPage.xaml", UriKind.Relative);
+                            ShellTileExt.Create(tilesUri, (ShellTileData)UpdateTileData, true);
+                        }
+                        else
+                        {
+                            // Invoke the new version of ShellTile.Update.
+                            shellTileType.GetMethod("Update").Invoke(tileToUpdate, new Object[] { UpdateTileData });
+                            MessageBox.Show("Your Image Tiles is updated");
+                        }
+
+                    }
+                    else
+                    {
+                        ShellTile TileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("MainPage.xaml"));
+                        StandardTileData NewTileData = new StandardTileData
+                        {
+                            BackgroundImage = new Uri("isostore:/Shared/ShellContent/medium1.jpg", UriKind.Absolute),
+                            Title = txtImgtext2.Text,
+                            Count = 0,
+                        };
+
+                        strFileContent += "PanoramaIndex 1 \r\n";
+                        strFileContent += "Title " + txtImgtext2.Text + "\r\n";
+                        strFileContent += "BackgroundImage isostore://Shared//ShellContent//medium1.jpg \r\n";
+                        strFileContent += "Animation " + blAnimation.IsChecked.ToString() + "\r\n";
+
+                        if (blAnimation2.IsChecked == true)
+                        {
+                            NewTileData.BackBackgroundImage = new Uri("isostore:/Shared/ShellContent/medium2.jpg", UriKind.Absolute);
+                            strFileContent += "BackBackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
+                        }
+
+
+                        if (TileToFind == null)
+                        {
+                            // Create the tile and pin it to Start. This will cause a navigation to Start and a deactivation of our application.
+                            Uri tilesUri = new Uri("/MainPage.xaml", UriKind.Relative);
+                            ShellTile.Create(tilesUri, NewTileData);
+                        }
+                        else
+                        {
+
+                            TileToFind.Update(NewTileData);
+                            MessageBox.Show("Your Image Tiles is updated");
+                        }
+                    }
+                }
+                WriteToFile(strFileContent);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void WriteToFile(string strFileContent)
+        {
+            try
+            {
+                IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
+
+                //Open existing file
+                IsolatedStorageFileStream fileStream = myIsolatedStorage.OpenFile("ImageTiles.ini", FileMode.OpenOrCreate, FileAccess.Write);
+                using (StreamWriter writer = new StreamWriter(fileStream))
+                {
+                    //string someTextData = "Some More TEXT Added:  !";
+                    writer.Write(strFileContent);
+                    writer.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
     public static class ShellTileExt
