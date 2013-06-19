@@ -42,8 +42,15 @@ namespace Image_Tiles
             }
 
             LoadTile();
-        }
+        }       
 
+        private Stream LoadFile(string file)
+        {
+            using (var isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                return isoStore.OpenFile(file, FileMode.Open, FileAccess.Read);
+            }
+        }    
         private void LoadTile()
         {
             try
@@ -69,47 +76,54 @@ namespace Image_Tiles
                             int pnmIndex = int.Parse(dic["PanoramaIndex"]);
                             pnmImage.DefaultItem = pnmImage.Items[pnmIndex];
 
+                            Stream stream;
+                            System.Windows.Media.Imaging.BitmapImage bmp;
                             if (pnmIndex == 0)
                             {
-                                txtImgtext.Text = dic["Title"];
-                                ImageSource imgSource;
-                                Uri uri;
+                                txtImgtext.Text = dic["Title"];                           
+                               
+                                stream = LoadFile(dic["BackgroundImage"].Replace("isostore:", ""));
+                                bmp = new System.Windows.Media.Imaging.BitmapImage();
+                                bmp.SetSource(stream);
+                                imgMedium.Source = bmp;
 
-                                uri = new Uri(dic["BackgroundImage"], UriKind.Absolute);
-                                imgSource = new BitmapImage(uri);
-                                imgMedium.Source = imgSource;
-
-                                uri = new Uri(dic["WideBackgroundImage"], UriKind.Absolute);
-                                imgSource = new BitmapImage(uri);
-                                imgWide.Source = imgSource;
+                                //uri = new Uri(dic["WideBackgroundImage"], UriKind.Absolute);
+                                stream = LoadFile(dic["WideBackgroundImage"].Replace("isostore:", ""));
+                                bmp = new System.Windows.Media.Imaging.BitmapImage();
+                                bmp.SetSource(stream);
+                                imgWide.Source = bmp;
+                                //imgSource = new BitmapImage(uri);
+                                //imgWide.Source = imgSource;
 
                                 blAnimation.IsChecked = bool.Parse(dic["Animation"]);                                
                             }
                             else
                             {
-                                txtImgtext2.Text = dic["Title"];
-                                ImageSource imgSource;
-                                Uri uri;
+                                txtImgtext2.Text = dic["Title"];                             
 
-                                uri = new Uri(dic["BackgroundImage"], UriKind.Absolute);
-                                imgSource = new BitmapImage(uri);
-                                imgMedium1.Source = imgSource;
+                                stream = LoadFile(dic["BackgroundImage"].Replace("isostore:", ""));
+                                bmp = new System.Windows.Media.Imaging.BitmapImage();
+                                bmp.SetSource(stream);                                
+                                imgMedium1.Source = bmp;
 
-                                uri = new Uri(dic["WideBackgroundImage"], UriKind.Absolute);
-                                imgSource = new BitmapImage(uri);
-                                imgWide1.Source = imgSource;
+                                stream = LoadFile(dic["WideBackgroundImage"].Replace("isostore:", ""));
+                                bmp = new System.Windows.Media.Imaging.BitmapImage();
+                                bmp.SetSource(stream);                                
+                                imgWide1.Source = bmp;
 
                                 blAnimation2.IsChecked = bool.Parse(dic["Animation"]);
 
                                 if (blAnimation2.IsChecked==true)
                                 {
-                                    uri = new Uri(dic["BackBackgroundImage"], UriKind.Absolute);
-                                    imgSource = new BitmapImage(uri);
-                                    imgMedium2.Source = imgSource;
+                                    stream = LoadFile(dic["BackBackgroundImage"].Replace("isostore:", ""));
+                                    bmp = new System.Windows.Media.Imaging.BitmapImage();
+                                    bmp.SetSource(stream);                                    
+                                    imgMedium2.Source = bmp;
 
-                                    uri = new Uri(dic["WideBackBackgroundImage"], UriKind.Absolute);
-                                    imgSource = new BitmapImage(uri);
-                                    imgWide2.Source = imgSource;
+                                    stream = LoadFile(dic["WideBackBackgroundImage"].Replace("isostore:", ""));
+                                    bmp = new System.Windows.Media.Imaging.BitmapImage();
+                                    bmp.SetSource(stream);                                    
+                                    imgWide2.Source = bmp;
                                 }
                             }
 
@@ -331,17 +345,17 @@ namespace Image_Tiles
 
                         strFileContent += "PanoramaIndex 0 \r\n";
                         strFileContent += "Title " + txtImgtext.Text + "\r\n";
-                        strFileContent += "SmallBackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
-                        strFileContent += "BackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
-                        strFileContent += "WideBackgroundImage isostore://Shared//ShellContent//wide.jpg \r\n";
+                        strFileContent += "SmallBackgroundImage isostore:/Shared/ShellContent/medium.jpg \r\n";
+                        strFileContent += "BackgroundImage isostore:/Shared/ShellContent/medium.jpg \r\n";
+                        strFileContent += "WideBackgroundImage isostore:/Shared/ShellContent/wide.jpg \r\n";
                         strFileContent += "Animation " + blAnimation.IsChecked.ToString() + "\r\n";
                         if (blAnimation.IsChecked == true)
                         {
                             SetProperty(UpdateTileData, "BackBackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium.jpg", UriKind.Absolute));
                             SetProperty(UpdateTileData, "WideBackBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide.jpg", UriKind.Absolute));
 
-                            strFileContent += "BackBackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
-                            strFileContent += "WideBackBackgroundImage isostore://Shared//ShellContent//wide.jpg \r\n";
+                            strFileContent += "BackBackgroundImage isostore:/Shared/ShellContent/medium.jpg \r\n";
+                            strFileContent += "WideBackBackgroundImage isostore:/Shared/ShellContent/wide.jpg \r\n";
 
                         }
 
@@ -377,7 +391,7 @@ namespace Image_Tiles
                         if (blAnimation.IsChecked == true)
                         {
                             NewTileData.BackBackgroundImage = new Uri("isostore:/Shared/ShellContent/medium.jpg", UriKind.Absolute);
-                            strFileContent += "BackBackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
+                            strFileContent += "BackBackgroundImage isostore:/Shared/ShellContent/medium.jpg \r\n";
                         }
 
 
@@ -427,9 +441,9 @@ namespace Image_Tiles
 
                         strFileContent += "PanoramaIndex 1 \r\n";
                         strFileContent += "Title " + txtImgtext2.Text + "\r\n";
-                        strFileContent += "SmallBackgroundImage isostore://Shared//ShellContent//medium1.jpg \r\n";
-                        strFileContent += "BackgroundImage isostore://Shared//ShellContent//medium1.jpg \r\n";
-                        strFileContent += "WideBackgroundImage isostore://Shared//ShellContent//wide1.jpg \r\n";
+                        strFileContent += "SmallBackgroundImage isostore:/Shared/ShellContent/medium1.jpg \r\n";
+                        strFileContent += "BackgroundImage isostore:/Shared/ShellContent/medium1.jpg \r\n";
+                        strFileContent += "WideBackgroundImage isostore:/Shared/ShellContent/wide1.jpg \r\n";
                         strFileContent += "Animation " + blAnimation.IsChecked.ToString() + "\r\n";
 
                         if (blAnimation2.IsChecked == true)
@@ -437,8 +451,8 @@ namespace Image_Tiles
                             SetProperty(UpdateTileData, "BackBackgroundImage", new Uri("isostore:/Shared/ShellContent/Medium2.jpg", UriKind.Absolute));
                             SetProperty(UpdateTileData, "WideBackBackgroundImage", new Uri("isostore:/Shared/ShellContent/wide2.jpg", UriKind.Absolute));
 
-                            strFileContent += "BackBackgroundImage isostore://Shared//ShellContent//medium2.jpg \r\n";
-                            strFileContent += "WideBackBackgroundImage isostore://Shared//ShellContent//wide2.jpg \r\n";
+                            strFileContent += "BackBackgroundImage isostore:/Shared/ShellContent/medium2.jpg \r\n";
+                            strFileContent += "WideBackBackgroundImage isostore:/Shared/ShellContent/wide2.jpg \r\n";
 
                         }
 
@@ -467,13 +481,13 @@ namespace Image_Tiles
 
                         strFileContent += "PanoramaIndex 1 \r\n";
                         strFileContent += "Title " + txtImgtext2.Text + "\r\n";
-                        strFileContent += "BackgroundImage isostore://Shared//ShellContent//medium1.jpg \r\n";
+                        strFileContent += "BackgroundImage isostore:/Shared/ShellContent/medium1.jpg \r\n";
                         strFileContent += "Animation " + blAnimation.IsChecked.ToString() + "\r\n";
 
                         if (blAnimation2.IsChecked == true)
                         {
                             NewTileData.BackBackgroundImage = new Uri("isostore:/Shared/ShellContent/medium2.jpg", UriKind.Absolute);
-                            strFileContent += "BackBackgroundImage isostore://Shared//ShellContent//medium.jpg \r\n";
+                            strFileContent += "BackBackgroundImage isostore:/Shared/ShellContent/medium.jpg \r\n";
                         }
 
 
