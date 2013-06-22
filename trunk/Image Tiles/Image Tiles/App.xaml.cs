@@ -12,12 +12,51 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Windows.Media.Imaging;
 
 namespace Image_Tiles
 {
     public partial class App : Application
     {
+
+        //image name
+        public static string imgName = "";
+        public static string FullImgName = "";
+        public static bool blLoadIamge = false;
         private static MainViewModel viewModel = null;
+        
+        //load file from storage
+        public static Stream LoadFile(string file)
+        {
+            using (var isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            {               
+                return isoStore.OpenFile(file, FileMode.Open, FileAccess.Read);
+            }
+        }
+
+        //write image
+        public static void saveImage(BitmapSource bmpsource, string imgName)
+        {
+            try
+            {
+                using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (isf.FileExists(imgName))
+                        isf.DeleteFile(imgName);
+                    using (IsolatedStorageFileStream isfs = isf.CreateFile(imgName))
+                    {
+                        var bmp = new WriteableBitmap(bmpsource);
+                        bmp.SaveJpeg(isfs, bmp.PixelWidth, bmp.PixelHeight, 0, 100);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
 
         /// <summary>
         /// A static ViewModel used by the views to bind against.

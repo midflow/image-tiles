@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:UI="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"  
 xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
     x:Class="Image_Tiles.MainPage" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800" 
     d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
@@ -19,6 +20,8 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/pin.png" Text="Pin" Click="ApplicationBarIconButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.share.rest.png" Text="Buy" Click="BuyButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.favs.rest.png" Text="Rate" Click="RateButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
@@ -54,7 +57,7 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
                         <RowDefinition Height="Auto"  />
 
                     </Grid.RowDefinitions>
-                    <Button  Height="136" VerticalAlignment="Top"  HorizontalAlignment="Left" Grid.Column="0" Width="245" Grid.Row="0" Tap="Button_Tap" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="-13,0,0,0"  >
+                    <Button  Height="136" VerticalAlignment="Top"  Padding="0" HorizontalAlignment="Left" Grid.Column="0" Width="245" Grid.Row="0" Tap="Button_Tap" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="-13,0,0,0"  >
 
                         <Image HorizontalAlignment="Center" Height="105"  VerticalAlignment="Top" Width="215"  Stretch="UniformToFill" x:Name="imgWide" Grid.Column="0" Grid.Row="0" />
 
@@ -64,7 +67,7 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
                         
                     </Border>-->
 
-                    <Button HorizontalAlignment="Left" Height="136" VerticalAlignment="Top" Width="146" Cursor="Hand" Grid.Column="1" Grid.Row="0" Margin="17,0,0,0" Tap="Button_Tap_1">
+                    <Button HorizontalAlignment="Left" Padding="0" Height="136" VerticalAlignment="Top" Width="146" Cursor="Hand" Grid.Column="1" Grid.Row="0" Margin="17,0,0,0" Tap="Button_Tap_1">
                         <Image HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="105" Stretch="UniformToFill" x:Name="imgMedium"  Margin="-2,-1,0,-1" Grid.Column="1" Grid.Row="0"/>
                     </Button>
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="Wide Image"  />
@@ -74,9 +77,13 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
 
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="Animation" />
                     <Controls:ToggleSwitch x:Name="blAnimation"  Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top"  Grid.Column="1" Grid.Row="3" IsChecked="true"  />
-                    <UI:AdControl  ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="75" Margin="0,0,-37,-56" VerticalAlignment="Bottom" Width="420" Keywords="image" IsAutoRefreshEnabled="true" Name="adcontrol1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="2" />
+                    <!--<UI:AdControl  ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="75" Margin="0,0,-37,-56" VerticalAlignment="Bottom" Width="420" Keywords="image" IsAutoRefreshEnabled="true" Name="adcontrol1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="2" />-->
 
-
+                    <mobfox:AdControl 
+                Name="mobFoxadControl"     VerticalAlignment="Bottom" Width="420"   Grid.ColumnSpan="2" Grid.Row="5"           
+                PublisherID="f8c8c28df6d58571d2436b7eba7bde9e"
+                TestMode="True" Margin="0,0,0,-54"
+                />
                 </Grid>
                 <!--Double line list with text wrapping-->
             </controls:PanoramaItem>
@@ -94,7 +101,7 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="222" />
-                        <ColumnDefinition Width="Auto" MinWidth="214" />
+                        <ColumnDefinition Width="Auto" MinWidth="222" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="125" />
@@ -106,7 +113,7 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
 
                     </Grid.RowDefinitions>
 
-                    <Button x:Name="btnWide21" HorizontalAlignment="Right" Height="125" VerticalAlignment="Top" Width="205" Cursor="Hand" Tap="btnWide21_Tap" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0,0,12,0" >
+                    <Button x:Name="btnWide21" HorizontalAlignment="left" Height="125" VerticalAlignment="Top" Width="205" Cursor="Hand" Tap="btnWide21_Tap" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0,0,12,0" >
                         <Image HorizontalAlignment="Right" Height="100"  VerticalAlignment="Top" Width="180"  Stretch="UniformToFill" x:Name="imgWide1" Grid.Row="0" Grid.Column="0"  />
                     </Button>
                     <Button x:Name="btnWide22" Padding="0"  HorizontalAlignment="left" Height="125" VerticalAlignment="Top" Width="205" Cursor="Hand" Tap="btnWide22_Tap" Grid.Row="0" Grid.Column="1" >
@@ -114,18 +121,21 @@ xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.C
                         </Image>
                     </Button>
 
-                    <Button x:Name="btnMedium21"  HorizontalAlignment="Left" Height="136" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Top" Width="145" Cursor="Hand" Tap="btnMedium21_Tap" Grid.RowSpan="2">
-                        <Image HorizontalAlignment="Right" Height="105" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Width="105" Stretch="UniformToFill" x:Name="imgMedium1"/>
+                    <Button x:Name="btnMedium21" Padding="0"  HorizontalAlignment="Left" Height="136" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Top" Width="145" Cursor="Hand" Tap="btnMedium21_Tap" Grid.RowSpan="2">
+                        <Image HorizontalAlignment="Left" Height="105" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Width="115" Stretch="UniformToFill" x:Name="imgMedium1"/>
                     </Button>
-                    <Button x:Name="bntMedium22"  HorizontalAlignment="Left" Height="136" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Width="146" Cursor="Hand" Tap="bntMedium22_Tap" Grid.RowSpan="2">
-                        <Image HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="105" Stretch="UniformToFill" x:Name="imgMedium2"  Margin="-1"/>
+                    <Button x:Name="bntMedium22" Padding="0"  HorizontalAlignment="Left" Height="136" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Width="146" Cursor="Hand" Tap="bntMedium22_Tap" Grid.RowSpan="2">
+                        <Image HorizontalAlignment="Left" Height="105" VerticalAlignment="Top" Width="110" Stretch="UniformToFill" x:Name="imgMedium2" />
                     </Button>
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Text"/>
                     <TextBox x:Name="txtImgtext2" ToolTipService.ToolTip="Put Imaga text here" Grid.Row="2" Grid.Column="1" FontSize="16"/>
                     <TextBlock Text="Animation" Grid.Row="3" Grid.Column="0" />
                     <Controls:ToggleSwitch x:Name="blAnimation2" Grid.Row="3" Grid.Column="1" Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top" Grid.RowSpan="2" IsChecked="true" />
-
-                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125353" HorizontalAlignment="Left" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol2"/>
+                    <google:BannerAd           
+            Margin="0,45,24,1"
+            xmlns:google="clr-namespace:Google.AdMob.Ads.WindowsPhone7.WPF;assembly=Google.AdMob.Ads.WindowsPhone7" Width="425" Height="65" 
+            AdUnitID="a151c3fb45f1212  " Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2"/>
+                    <!--<UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125353" HorizontalAlignment="Left" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol2"/>-->
                 </Grid>
             </controls:PanoramaItem>
         </controls:Panorama>
