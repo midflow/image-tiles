@@ -41,32 +41,72 @@ namespace Image_Tiles
                 App.ViewModel.LoadData();
             }
 
-            LoadTile();
-        }       
-
-        private Stream LoadFile(string file)
-        {
-            using (var isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            if (!App.blLoadIamge)
             {
-                return isoStore.OpenFile(file, FileMode.Open, FileAccess.Read);
+                LoadTile();
             }
-        }    
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            //string imgname = "";
+            if (App.imgName != "")
+            {
+                IsolatedStorageFile file;
+                IsolatedStorageFileStream stream;
+                BitmapImage image;
+
+                file = IsolatedStorageFile.GetUserStoreForApplication();
+                stream = file.OpenFile("/Shared/ShellContent/" +App.imgName, FileMode.Open, FileAccess.Read);
+
+                image = new BitmapImage();
+                image.SetSource(stream);
+
+                switch (App.imgName)
+                {
+                    case "wide.jpg":                        
+                        imgWide.Source = image;                        
+                        break;
+                    case "medium.jpg":                        
+                        imgMedium.Source = image;                       
+                        break;
+                    case "wide1.jpg":                        
+                        imgWide1.Source = image;                        
+                        break;
+                    case "wide2.jpg":                        
+                        imgWide2.Source = image;                       
+                        break;
+                    case "medium1.jpg":                         
+                        imgMedium1.Source = image;                     
+                        break;
+                    case "medium2.jpg":                        
+                        imgMedium2.Source = image;                       
+                        break;
+                }
+                stream.Dispose();
+            }
+        }
+
+       
+
         private void LoadTile()
         {
             try
             {
-                Dictionary<string,string> dic = new Dictionary<string,string>();
+                Dictionary<string, string> dic = new Dictionary<string, string>();
                 IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
                 if (myIsolatedStorage.FileExists("ImageTiles.ini"))
                 {
                     IsolatedStorageFileStream fileStream = myIsolatedStorage.OpenFile("ImageTiles.ini", FileMode.Open, FileAccess.Read);
                     using (StreamReader reader = new StreamReader(fileStream))
-                    {    
+                    {
                         while (!reader.EndOfStream)
                         {
                             string strFileContent = reader.ReadLine();
                             string[] linecontent = strFileContent.Split(' ');
-                            dic.Add(linecontent[0],linecontent[1]);
+                            dic.Add(linecontent[0], linecontent[1]);
                             //MessageBox.Show(strFileContent);
                         }
 
@@ -80,56 +120,56 @@ namespace Image_Tiles
                             System.Windows.Media.Imaging.BitmapImage bmp;
                             if (pnmIndex == 0)
                             {
-                                txtImgtext.Text = dic["Title"];                           
-                               
-                                stream = LoadFile(dic["BackgroundImage"].Replace("isostore:", ""));
+                                txtImgtext.Text = dic["Title"];
+
+                                stream = App.LoadFile(dic["BackgroundImage"].Replace("isostore:", ""));
                                 bmp = new System.Windows.Media.Imaging.BitmapImage();
                                 bmp.SetSource(stream);
                                 imgMedium.Source = bmp;
 
                                 //uri = new Uri(dic["WideBackgroundImage"], UriKind.Absolute);
-                                stream = LoadFile(dic["WideBackgroundImage"].Replace("isostore:", ""));
+                                stream = App.LoadFile(dic["WideBackgroundImage"].Replace("isostore:", ""));
                                 bmp = new System.Windows.Media.Imaging.BitmapImage();
                                 bmp.SetSource(stream);
                                 imgWide.Source = bmp;
                                 //imgSource = new BitmapImage(uri);
                                 //imgWide.Source = imgSource;
 
-                                blAnimation.IsChecked = bool.Parse(dic["Animation"]);                                
+                                blAnimation.IsChecked = bool.Parse(dic["Animation"]);
                             }
                             else
                             {
-                                txtImgtext2.Text = dic["Title"];                             
+                                txtImgtext2.Text = dic["Title"];
 
-                                stream = LoadFile(dic["BackgroundImage"].Replace("isostore:", ""));
+                                stream = App.LoadFile(dic["BackgroundImage"].Replace("isostore:", ""));
                                 bmp = new System.Windows.Media.Imaging.BitmapImage();
-                                bmp.SetSource(stream);                                
+                                bmp.SetSource(stream);
                                 imgMedium1.Source = bmp;
 
-                                stream = LoadFile(dic["WideBackgroundImage"].Replace("isostore:", ""));
+                                stream = App.LoadFile(dic["WideBackgroundImage"].Replace("isostore:", ""));
                                 bmp = new System.Windows.Media.Imaging.BitmapImage();
-                                bmp.SetSource(stream);                                
+                                bmp.SetSource(stream);
                                 imgWide1.Source = bmp;
 
                                 blAnimation2.IsChecked = bool.Parse(dic["Animation"]);
 
-                                if (blAnimation2.IsChecked==true)
+                                if (blAnimation2.IsChecked == true)
                                 {
-                                    stream = LoadFile(dic["BackBackgroundImage"].Replace("isostore:", ""));
+                                    stream = App.LoadFile(dic["BackBackgroundImage"].Replace("isostore:", ""));
                                     bmp = new System.Windows.Media.Imaging.BitmapImage();
-                                    bmp.SetSource(stream);                                    
+                                    bmp.SetSource(stream);
                                     imgMedium2.Source = bmp;
 
-                                    stream = LoadFile(dic["WideBackBackgroundImage"].Replace("isostore:", ""));
+                                    stream = App.LoadFile(dic["WideBackBackgroundImage"].Replace("isostore:", ""));
                                     bmp = new System.Windows.Media.Imaging.BitmapImage();
-                                    bmp.SetSource(stream);                                    
+                                    bmp.SetSource(stream);
                                     imgWide2.Source = bmp;
                                 }
                             }
 
                         }
 
-                        
+
 
                     }
                 }
@@ -154,7 +194,7 @@ namespace Image_Tiles
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
                 bmp.SetSource(e.ChosenPhoto);
 
-                saveImage((BitmapSource)bmp, "/Shared/ShellContent/wide.jpg");
+                App.saveImage((BitmapSource)bmp, "/Shared/ShellContent/wide.jpg");
                 imgWide.Source = bmp;
             }
         }
@@ -169,7 +209,7 @@ namespace Image_Tiles
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
                 bmp.SetSource(e.ChosenPhoto);
 
-                saveImage((BitmapSource)bmp, "/Shared/ShellContent/Medium.jpg");
+                App.saveImage((BitmapSource)bmp, "/Shared/ShellContent/Medium.jpg");
                 imgMedium.Source = bmp;
             }
         }
@@ -184,7 +224,7 @@ namespace Image_Tiles
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
                 bmp.SetSource(e.ChosenPhoto);
 
-                saveImage((BitmapSource)bmp, "/Shared/ShellContent/wide1.jpg");
+                App.saveImage((BitmapSource)bmp, "/Shared/ShellContent/wide1.jpg");
                 imgWide1.Source = bmp;
             }
         }
@@ -199,7 +239,7 @@ namespace Image_Tiles
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
                 bmp.SetSource(e.ChosenPhoto);
 
-                saveImage((BitmapSource)bmp, "/Shared/ShellContent/Medium1.jpg");
+                App.saveImage((BitmapSource)bmp, "/Shared/ShellContent/Medium1.jpg");
                 imgMedium1.Source = bmp;
             }
         }
@@ -214,7 +254,7 @@ namespace Image_Tiles
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
                 bmp.SetSource(e.ChosenPhoto);
 
-                saveImage((BitmapSource)bmp, "/Shared/ShellContent/wide2.jpg");
+                App.saveImage((BitmapSource)bmp, "/Shared/ShellContent/wide2.jpg");
                 imgWide2.Source = bmp;
             }
         }
@@ -229,30 +269,11 @@ namespace Image_Tiles
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
                 bmp.SetSource(e.ChosenPhoto);
 
-                saveImage((BitmapSource)bmp, "/Shared/ShellContent/Medium2.jpg");
+                App.saveImage((BitmapSource)bmp, "/Shared/ShellContent/Medium2.jpg");
                 imgMedium2.Source = bmp;
             }
         }
-        private void saveImage(BitmapSource bmpsource, string imgName)
-        {
-            try
-            {
-                using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    if (isf.FileExists(imgName))
-                        isf.DeleteFile(imgName);
-                    using (IsolatedStorageFileStream isfs = isf.CreateFile(imgName))
-                    {
-                        var bmp = new WriteableBitmap(bmpsource);
-                        bmp.SaveJpeg(isfs, bmp.PixelWidth, bmp.PixelHeight, 0, 100);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
-        }
+       
 
         private static void SetProperty(object instance, string name, object value)
         {
@@ -262,50 +283,56 @@ namespace Image_Tiles
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask_Completed);
-            photoChooserTask.Show();
+            //PhotoChooserTask photoChooserTask;
+            //photoChooserTask = new PhotoChooserTask();
+            //photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask_Completed);
+            //photoChooserTask.Show();
+            NavigationService.Navigate(new Uri("/Page1.xaml?imagename=wide.jpg", UriKind.Relative));
         }
 
         private void Button_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask_Completed);
-            photoChooserTask.Show();
+            //PhotoChooserTask photoChooserTask;
+            //photoChooserTask = new PhotoChooserTask();
+            //photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask_Completed);
+            //photoChooserTask.Show();
+            NavigationService.Navigate(new Uri("/Page1.xaml?imagename=medium.jpg", UriKind.Relative));
         }
 
         private void btnWide21_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask1_Completed);
-            photoChooserTask.Show();
+            //PhotoChooserTask photoChooserTask;
+            //photoChooserTask = new PhotoChooserTask();
+            //photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask1_Completed);
+            //photoChooserTask.Show();
+            NavigationService.Navigate(new Uri("/Page1.xaml?imagename=wide1.jpg", UriKind.Relative));
         }
 
         private void btnWide22_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask2_Completed);
-            photoChooserTask.Show();
+            //PhotoChooserTask photoChooserTask;
+            //photoChooserTask = new PhotoChooserTask();
+            //photoChooserTask.Completed += new EventHandler<PhotoResult>(imgWideChooserTask2_Completed);
+            //photoChooserTask.Show();
+            NavigationService.Navigate(new Uri("/Page1.xaml?imagename=wide2.jpg", UriKind.Relative));
         }
 
         private void btnMedium21_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask1_Completed);
-            photoChooserTask.Show();
+            //PhotoChooserTask photoChooserTask;
+            //photoChooserTask = new PhotoChooserTask();
+            //photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask1_Completed);
+            //photoChooserTask.Show();
+            NavigationService.Navigate(new Uri("/Page1.xaml?imagename=medium1.jpg", UriKind.Relative));
         }
 
         private void bntMedium22_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            PhotoChooserTask photoChooserTask;
-            photoChooserTask = new PhotoChooserTask();
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask2_Completed);
-            photoChooserTask.Show();
+            //PhotoChooserTask photoChooserTask;
+            //photoChooserTask = new PhotoChooserTask();
+            //photoChooserTask.Completed += new EventHandler<PhotoResult>(imgMediumChooserTask2_Completed);
+            //photoChooserTask.Show();
+            NavigationService.Navigate(new Uri("/Page1.xaml?imagename=medium2.jpg", UriKind.Relative));
         }
 
         private void ApplicationBarIconButton_Click(object sender, EventArgs e)
@@ -405,7 +432,7 @@ namespace Image_Tiles
                         {
                             TileToFind.Update(NewTileData);
                             MessageBox.Show("Your Image Tiles is updated");
-                        }                        
+                        }
                     }
 
                 }
@@ -513,6 +540,22 @@ namespace Image_Tiles
             }
         }
 
+        private void RateButton_Click(object sender, EventArgs e)
+        {
+            MarketplaceReviewTask review = new MarketplaceReviewTask();
+            review.Show();
+        }
+
+        private void BuyButton_Click(object sender, EventArgs e)
+        {
+            MarketplaceDetailTask marketplaceDetailTask = new MarketplaceDetailTask();
+
+            marketplaceDetailTask.ContentIdentifier = "5380010f-5b8a-42be-81e5-b7b45f48b04e";
+            marketplaceDetailTask.ContentType = MarketplaceContentType.Applications;
+
+            marketplaceDetailTask.Show();
+        }
+
         private void WriteToFile(string strFileContent)
         {
             try
@@ -543,4 +586,5 @@ namespace Image_Tiles
             createmethod.Invoke(null, new object[] { uri, tiledata, usewide });
         }
     }
+
 }

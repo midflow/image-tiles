@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{cfbd9e95-1c41-4abb-b8cf-3cdbe3643fb9}" Title="Image Tiles" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="trunglt" Description="You can pin your favourite image to home" Publisher="Image Tiles">
+  <App xmlns="" ProductID="{5380010f-5b8a-42be-81e5-b7b45f48b04e}" Title="Image Tiles" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="trunglt" Description="You can pin your favourite image to home" Publisher="Image Tiles">
     <IconPath IsRelative="true" IsResource="false">image.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />
