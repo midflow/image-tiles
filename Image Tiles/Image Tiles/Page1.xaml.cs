@@ -62,12 +62,23 @@ namespace Image_Tiles
                 }
             }
         }
+
         void task_Completed(object sender, PhotoResult e)
         {
-            BitmapImage image = new BitmapImage();
-            image.SetSource(e.ChosenPhoto);
-            image1.Source = image;
-            SetPicture();
+            if (e.TaskResult == TaskResult.OK)
+            {
+                BitmapImage image = new BitmapImage();
+                image.SetSource(e.ChosenPhoto);
+                image1.Source = image;
+                SetPicture();
+            }
+            else
+            {
+                Dispatcher.BeginInvoke(() =>
+                {
+                    NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+                });
+            }
         }
 
         void SetPicture()

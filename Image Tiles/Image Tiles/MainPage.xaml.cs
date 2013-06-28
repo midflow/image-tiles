@@ -550,7 +550,7 @@ namespace Image_Tiles
         {
             MarketplaceDetailTask marketplaceDetailTask = new MarketplaceDetailTask();
 
-            marketplaceDetailTask.ContentIdentifier = "5380010f-5b8a-42be-81e5-b7b45f48b04e";
+            marketplaceDetailTask.ContentIdentifier = "c743bdf5-620a-42ef-a493-4793aa400668";
             marketplaceDetailTask.ContentType = MarketplaceContentType.Applications;
 
             marketplaceDetailTask.Show();
