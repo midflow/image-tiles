@@ -20,7 +20,7 @@ xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/pin.png" Text="Pin" Click="ApplicationBarIconButton_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.share.rest.png" Text="Buy" Click="BuyButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.share.rest.png" Text="Buy (no ads)" Click="BuyButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.favs.rest.png" Text="Rate" Click="RateButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
@@ -36,13 +36,13 @@ xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
 
             <!--Panorama item one-->
             <controls:PanoramaItem Header="One Image ">
-                <controls:PanoramaItem.Background>
+                <!--<controls:PanoramaItem.Background>
                     <RadialGradientBrush>
                         <GradientStop Color="Black" Offset="0"/>
                         <GradientStop Color="#FF4BD5F3" Offset="1"/>
                         <GradientStop Color="#FF63A5BB"/>
                     </RadialGradientBrush>
-                </controls:PanoramaItem.Background>
+                </controls:PanoramaItem.Background>-->
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="220" />
@@ -91,13 +91,13 @@ xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
             <!--Panorama item two-->
             <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
             <controls:PanoramaItem Header="Two Images">
-                <controls:PanoramaItem.Background>
+                <!--<controls:PanoramaItem.Background>
                     <RadialGradientBrush>
                         <GradientStop Color="Black" Offset="0"/>
                         <GradientStop Color="#FF4BD5F3" Offset="1"/>
                         <GradientStop Color="#FF63A5BB"/>
                     </RadialGradientBrush>
-                </controls:PanoramaItem.Background>
+                </controls:PanoramaItem.Background>-->
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="222" />
