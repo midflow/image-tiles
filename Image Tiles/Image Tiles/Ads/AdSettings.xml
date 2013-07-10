@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AdSettings xmlns="http://wpunifiedad.codeplex.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://wpunifiedad.codeplex.com UnifiedAd.xsd">
+  <CountryDescriptors>
+    <AdCountryDescriptor Country="US, GB, VN" InitialAdProvider="PubCenter">
+      <Probability Value="50" AdProvider="PubCenter" />
+      <Probability Value="20" AdProvider="AdDuplex" />
+      <Probability Value="10" AdProvider="Smaato" />
+      <Probability Value="10" AdProvider="MobFox" />      
+      <Probability Value="10" AdProvider="MillennialMedia" />   
+    </AdCountryDescriptor>
+    <AdCountryDescriptor InitialAdProvider="PubCenter">
+      <Probability Value="30" AdProvider="PubCenter" />
+      <Probability Value="30" AdProvider="AdDuplex" />
+      <Probability Value="20" AdProvider="Smaato" />
+      <Probability Value="10" AdProvider="MobFox" />      
+      <Probability Value="10" AdProvider="MillennialMedia" />   
+    </AdCountryDescriptor>
+  </CountryDescriptors>
+</AdSettings>

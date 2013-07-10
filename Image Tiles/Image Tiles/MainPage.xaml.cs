@@ -50,7 +50,10 @@ namespace Image_Tiles
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
+            while (this.NavigationService.BackStack.Any())
+            {
+                this.NavigationService.RemoveBackEntry();
+            }
             //string imgname = "";
             if (App.imgName != "")
             {
@@ -87,9 +90,7 @@ namespace Image_Tiles
                 }
                 stream.Dispose();
             }
-        }
-
-       
+        }       
 
         private void LoadTile()
         {
@@ -274,7 +275,6 @@ namespace Image_Tiles
             }
         }
        
-
         private static void SetProperty(object instance, string name, object value)
         {
             var setMethod = instance.GetType().GetProperty(name).GetSetMethod();
@@ -575,6 +575,11 @@ namespace Image_Tiles
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void AboutButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/About.xaml", UriKind.Relative));
         }
     }
     public static class ShellTileExt
