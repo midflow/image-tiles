@@ -7,8 +7,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:UI="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"  
-xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
+    xmlns:google="clr-namespace:Google.AdMob.Ads.WindowsPhone7.WPF;assembly=Google.AdMob.Ads.WindowsPhone7" 
+    xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK"
     x:Class="Image_Tiles.MainPage" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800" 
     d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
@@ -22,6 +24,7 @@ xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/pin.png" Text="Pin" Click="ApplicationBarIconButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.share.rest.png" Text="Buy (no ads)" Click="BuyButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.favs.rest.png" Text="Rate" Click="RateButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.status.rest.png" Text="About" Click="AboutButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
@@ -77,13 +80,40 @@ xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
 
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="Animation" />
                     <Controls:ToggleSwitch x:Name="blAnimation"  Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top"  Grid.Column="1" Grid.Row="3" IsChecked="true"  />
+                    <Ads:AdControl x:Name="AdBasic1" Height="74"  Grid.ColumnSpan="2" Grid.Row="4" VerticalAlignment="Bottom" Width="432"  Margin="4,0,-4,-54" Grid.RowSpan="2"
+                FallbackAdProviderName="PubCenter"
+                IsTest="False"
+                xmlns:Ads="clr-namespace:MC.Phone.Ads;assembly=MC.Phone.Ads"
+                xmlns:PubCenter="clr-namespace:MC.Phone.Ads.PubCenter;assembly=MC.Phone.Ads.PubCenter"
+                xmlns:Smaato="clr-namespace:MC.Phone.Ads.Smaato;assembly=MC.Phone.Ads.Smaato"
+                xmlns:MobFox="clr-namespace:MC.Phone.Ads.MobFox;assembly=MC.Phone.Ads.MobFox"
+                xmlns:AdMob="clr-namespace:MC.Phone.Ads.AdMob;assembly=MC.Phone.Ads.AdMob"
+                xmlns:Provider="clr-namespace:MC.Phone.Ads.Provider;assembly=MC.Phone.Ads"
+                xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK"
+                xmlns:AdDuplex="clr-namespace:MC.Phone.Ads.AdDuplex;assembly=MC.Phone.Ads.AdDuplex" 
+                xmlns:MilMedia="clr-namespace:MC.Phone.Ads.MillennialMedia;assembly=MC.Phone.Ads.MillennialMedia"
+>
+                        <Ads:AdControl.AdProviderStrategy>
+                            <Strategy:RemoteAdProviderStrategy xmlns:Strategy="clr-namespace:MC.Phone.Ads.Strategy;assembly=MC.Phone.Ads"
+                                        LocalProviderSettingsUri="Ads/AdSettings.xml"
+                                        RemoteProviderSettingsUri="http://dongnamtourist.com/AdSettings.xml" />
+                        </Ads:AdControl.AdProviderStrategy>
+                        <Ads:AdControl.AdProviders>
+                            <Provider:NoneAdProvider />
+                            <AdDuplex:AdDuplexAdProvider App="45179" />
+                            <AdMob:AdMobAdProvider AdUnit="a151c3fb45f1212" />
+                            <MilMedia:MillennialMediaAdProvider Apid="128109" />
+                            <Smaato:SmaatoAdProvider AdSpace="65808330"
+                                    Publisher="923870769" />
+                            <PubCenter:PubCenterAdProvider Application="eb1f0cc2-5581-4802-a30a-116f8be3522f"
+                                        AdUnit="125040" />
+                            <!--InnerActive is not really suitable for the Ad Rotation because it doesn't have any events to react on.-->
+                            <!--<InnerActive:InnerActiveAdProvider App="" />-->
+                        </Ads:AdControl.AdProviders>
+                    </Ads:AdControl>
                     <!--<UI:AdControl  ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="75" Margin="0,0,-37,-56" VerticalAlignment="Bottom" Width="420" Keywords="image" IsAutoRefreshEnabled="true" Name="adcontrol1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="2" />-->
 
-                    <mobfox:AdControl 
-                Name="mobFoxadControl"     VerticalAlignment="Bottom" Width="420"   Grid.ColumnSpan="2" Grid.Row="5"           
-                PublisherID="f8c8c28df6d58571d2436b7eba7bde9e"
-                TestMode="True" Margin="0,0,0,-54"
-                />
+                    <!--<mobfox:AdControl Name="mobFoxadControl" TestMode="False" VerticalAlignment="Bottom" Width="420"   Grid.ColumnSpan="2" Grid.Row="5" PublisherID="f8c8c28df6d58571d2436b7eba7bde9e" Margin="0,0,0,-54"  />-->
                 </Grid>
                 <!--Double line list with text wrapping-->
             </controls:PanoramaItem>
@@ -131,11 +161,48 @@ xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
                     <TextBox x:Name="txtImgtext2" ToolTipService.ToolTip="Put Imaga text here" Grid.Row="2" Grid.Column="1" FontSize="16"/>
                     <TextBlock Text="Animation" Grid.Row="3" Grid.Column="0" />
                     <Controls:ToggleSwitch x:Name="blAnimation2" Grid.Row="3" Grid.Column="1" Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top" Grid.RowSpan="2" IsChecked="true" />
-                    <google:BannerAd           
-            Margin="0,45,24,1"
-            xmlns:google="clr-namespace:Google.AdMob.Ads.WindowsPhone7.WPF;assembly=Google.AdMob.Ads.WindowsPhone7" Width="425" Height="65" 
-            AdUnitID="a151c3fb45f1212  " Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2"/>
-                    <!--<UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125353" HorizontalAlignment="Left" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol2"/>-->
+
+                    <Ads:AdControl x:Name="AdBasic" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432"
+                FallbackAdProviderName="PubCenter"
+                IsTest="False"
+                xmlns:Ads="clr-namespace:MC.Phone.Ads;assembly=MC.Phone.Ads"
+                xmlns:PubCenter="clr-namespace:MC.Phone.Ads.PubCenter;assembly=MC.Phone.Ads.PubCenter"
+                xmlns:Smaato="clr-namespace:MC.Phone.Ads.Smaato;assembly=MC.Phone.Ads.Smaato"
+                xmlns:MobFox="clr-namespace:MC.Phone.Ads.MobFox;assembly=MC.Phone.Ads.MobFox"
+                xmlns:AdMob="clr-namespace:MC.Phone.Ads.AdMob;assembly=MC.Phone.Ads.AdMob"
+                xmlns:Provider="clr-namespace:MC.Phone.Ads.Provider;assembly=MC.Phone.Ads"
+                xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK"
+                xmlns:AdDuplex="clr-namespace:MC.Phone.Ads.AdDuplex;assembly=MC.Phone.Ads.AdDuplex">
+                        <Ads:AdControl.AdProviderStrategy>
+                            <Strategy:RemoteAdProviderStrategy xmlns:Strategy="clr-namespace:MC.Phone.Ads.Strategy;assembly=MC.Phone.Ads"
+                                        LocalProviderSettingsUri="Ads/AdSettings.xml"
+                                        RemoteProviderSettingsUri="http://dongnamtourist.com/AdSettings.xml" />
+                        </Ads:AdControl.AdProviderStrategy>
+                        <Ads:AdControl.AdProviders>
+                            <Provider:NoneAdProvider />
+                            <AdDuplex:AdDuplexAdProvider App="45179" />
+                            <AdMob:AdMobAdProvider AdUnit="a151c3fb45f1212" />
+                            <MobFox:MobFoxAdProvider Publisher="f8c8c28df6d58571d2436b7eba7bde9e" />
+                            <Smaato:SmaatoAdProvider AdSpace="65808330"
+                                    Publisher="923870769" />
+                            <PubCenter:PubCenterAdProvider Application="eb1f0cc2-5581-4802-a30a-116f8be3522f"
+                                        AdUnit="125353" />
+                            <!--InnerActive is not really suitable for the Ad Rotation because it doesn't have any events to react on.-->
+                            <!--<InnerActive:InnerActiveAdProvider App="" />-->
+                        </Ads:AdControl.AdProviders>
+                    </Ads:AdControl>
+                    <!--<InMobiSDK:IMAdView 
+                            Name="AdView"
+                            DisplayText="InMobi"
+                            AdSize="15"                            
+                            AppId="364687714df446b1890af0891033a5bc"                             
+                            HorizontalAlignment="Left" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432">
+                    </InMobiSDK:IMAdView>-->
+                    <!--<google:BannerAd           
+            Margin="0,45,24,1" 
+            Width="425" Height="65"  
+            AdUnitID="a151c3fb45f1212" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2"/>
+                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125353" HorizontalAlignment="Left" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol2"/>-->
                 </Grid>
             </controls:PanoramaItem>
         </controls:Panorama>

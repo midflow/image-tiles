@@ -1,0 +1,65 @@
+﻿Read the tutorial over here:
+Unified Ad for Windows Phone - Part 1 - Introduction: http://mark.mymonster.nl/2012/02/07/windows-phone-unified-ad-part-1-introduction
+Unified Ad for Windows Phone - Part 2 - Basic Usage: http://mark.mymonster.nl/2012/02/08/unified-ad-for-windows-phone-part-2-basic-usage
+Unified Ad for Windows Phone - Part 3 - Remote Ad Provider configuration: http://mark.mymonster.nl/2012/02/13/unified-ad-for-windows-phone-part-3-remote-ad-provider-configuration
+Unified Ad for Windows Phone - Part 4 – GenericAdProviderForXaml: http://mark.mymonster.nl/2012/02/14/unified-ad-for-windows-phone-part-4-genericadproviderforxaml
+
+- Add the Unified Ad for Windows Phone in your Xaml like this:
+
+<Ads:AdControl IsTest="True"
+                xmlns:Ads="clr-namespace:MC.Phone.Ads;assembly=MC.Phone.Ads"
+                xmlns:Provider="clr-namespace:MC.Phone.Ads.Provider;assembly=MC.Phone.Ads"
+                xmlns:PubCenter="clr-namespace:MC.Phone.Ads.PubCenter;assembly=MC.Phone.Ads.PubCenter"
+                xmlns:Smaato="clr-namespace:MC.Phone.Ads.Smaato;assembly=MC.Phone.Ads.Smaato"
+                xmlns:MobFox="clr-namespace:MC.Phone.Ads.MobFox;assembly=MC.Phone.Ads.MobFox"
+                xmlns:AdDuplex="clr-namespace:MC.Phone.Ads.AdDuplex;assembly=MC.Phone.Ads.AdDuplex"
+                xmlns:AdMob="clr-namespace:MC.Phone.Ads.AdMob;assembly=MC.Phone.Ads.AdMob"
+                xmlns:InnerActive="clr-namespace:MC.Phone.Ads.InnerActive;assembly=MC.Phone.Ads.InnerActive"
+                xmlns:MillenialMedia="clr-namespace:MC.Phone.Ads.MillenialMedia;assembly=MC.Phone.Ads.MillenialMedia"
+                Fa>
+        <Provider:GenericAdProviderForXaml XamlUri="http://someurlinthewild.com/Ad.xaml?appid={0}">
+            <Provider:GenericAdProviderForXaml.OfflineContent>
+                <Grid Width="480"
+                        Height="80"
+                        Background="{StaticResource PhoneBackgroundBrush}">
+                    <Border BorderBrush="{StaticResource PhoneAccentBrush}"
+                            BorderThickness="1">
+                        <Grid>
+                            <TextBlock Text="WP Unified Ad"
+                                        Foreground="{StaticResource PhoneAccentBrush}"
+                                        Margin="0"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        FontSize="35" />
+                            <HyperlinkButton NavigateUri="http://wpunifiedad.codeplex.com"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch">
+                            </HyperlinkButton>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Provider:GenericAdProviderForXaml.OfflineContent>
+        </Provider:GenericAdProviderForXaml>
+        <Provider:NoneAdProvider />
+        <PubCenter:PubCenterAdProvider Application=""
+                                        AdUnit="" />
+        <AdDuplex:AdDuplexAdProvider App="" />
+        <MobFox:MobFoxAdProvider Publisher="test" />
+        <Smaato:SmaatoAdProvider AdSpace="0"
+                                    Publisher="0" />
+        <!--Experimental Support-->
+        <!--<AdMob:AdMobAdProvider AdUnit="" />-->
+        <!--<MillenialMedia:MillenialMediaAdProvider Apid="" />-->
+        <!--<InnerActive:InnerActiveAdProvider App="" />-->
+    <Ads:AdControl.AdProviderStrategy>
+        <Strategy:RemoteAdProviderStrategy xmlns:Strategy="clr-namespace:MC.Phone.Ads.Strategy;assembly=MC.Phone.Ads"
+                                            LocalProviderSettingsUri="Ads/AdSettings.xml"
+                                            RemoteProviderSettingsUri="http://someurlinthewild.com/AdSettings.xml" 
+                                            FallbackAdProviderName="GenericAdProviderForXaml"
+                                            WhenOffline="UseFallbackAdProvider" />
+    </Ads:AdControl.AdProviderStrategy>
+</Ads:AdControl>
+
+- Remove the ad providers that you don't want to use and fill in the details of the chosen ad providers. This example also contains the GenericAdProviderForXaml ad provider which is a generic ad provider that can be used to show your own ads. More information on the GenericAdProviderForXaml can be found here: http://mark.mymonster.nl/2012/02/14/unified-ad-for-windows-phone-part-4-genericadproviderforxaml
+
+- This configuration uses the RemoteAdProviderStrategy the local settings can be found in /Ads/AdSettings.xml. It's recommended to change this configuration file to your needs and create a copy of it that you host somewhere on the internet, additionally you have to change the RemoteProviderSettingsUri property to the url where the Xml file is hosted. More information on how to change the configuration file: http://mark.mymonster.nl/2012/02/13/unified-ad-for-windows-phone-part-3-remote-ad-provider-configuration
