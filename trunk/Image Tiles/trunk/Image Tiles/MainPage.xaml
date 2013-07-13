@@ -1,0 +1,210 @@
+﻿<phone:PhoneApplicationPage xmlns:Controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:UI="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"  
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads"
+    xmlns:google="clr-namespace:Google.AdMob.Ads.WindowsPhone7.WPF;assembly=Google.AdMob.Ads.WindowsPhone7" 
+    xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK"
+    x:Class="Image_Tiles.MainPage" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800" 
+    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/pin.png" Text="Pin" Click="ApplicationBarIconButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.share.rest.png" Text="Buy (no ads)" Click="BuyButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.favs.rest.png" Text="Rate" Click="RateButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.status.rest.png" Text="About" Click="AboutButton_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <!--Panorama control-->
+        <controls:Panorama Title="Image Tiles" Name="pnmImage">
+            <controls:Panorama.Background>
+                <ImageBrush ImageSource="PanoramaBackground.png"/>
+            </controls:Panorama.Background>
+
+            <!--Panorama item one-->
+            <controls:PanoramaItem Header="One Image ">
+                <!--<controls:PanoramaItem.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF4BD5F3" Offset="1"/>
+                        <GradientStop Color="#FF63A5BB"/>
+                    </RadialGradientBrush>
+                </controls:PanoramaItem.Background>-->
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="130" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="Auto"  />
+
+                    </Grid.RowDefinitions>
+                    <Button  Height="136" VerticalAlignment="Top"  Padding="0" HorizontalAlignment="Left" Grid.Column="0" Width="245" Grid.Row="0" Tap="Button_Tap" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="-13,0,0,0"  >
+
+                        <Image HorizontalAlignment="Center" Height="105"  VerticalAlignment="Top" Width="215"  Stretch="UniformToFill" x:Name="imgWide" Grid.Column="0" Grid.Row="0" />
+
+                    </Button>
+                    <!--<Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="215" Cursor="Hand" Grid.Column="0" Grid.Row="0" >
+                       
+                        
+                    </Border>-->
+
+                    <Button HorizontalAlignment="Left" Padding="0" Height="136" VerticalAlignment="Top" Width="146" Cursor="Hand" Grid.Column="1" Grid.Row="0" Margin="17,0,0,0" Tap="Button_Tap_1">
+                        <Image HorizontalAlignment="Right" Height="105" VerticalAlignment="Top" Width="105" Stretch="UniformToFill" x:Name="imgMedium"  Margin="-2,-1,0,-1" Grid.Column="1" Grid.Row="0"/>
+                    </Button>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Wide Image"  />
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="Medium Image"  />
+                    <TextBlock  Text="Text" Grid.Column="0" Grid.Row="2"/>
+                    <TextBox x:Name="txtImgtext" ToolTipService.ToolTip="Put Image text here" Grid.Column="1" Grid.Row="2" FontSize="16" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Animation" />
+                    <Controls:ToggleSwitch x:Name="blAnimation"  Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top"  Grid.Column="1" Grid.Row="3" IsChecked="true"  />
+                    <Ads:AdControl x:Name="AdBasic1" Height="74"  Grid.ColumnSpan="2" Grid.Row="4" VerticalAlignment="Bottom" Width="432"  Margin="4,0,-4,-54" Grid.RowSpan="2"
+                FallbackAdProviderName="PubCenter"
+                IsTest="False"
+                xmlns:Ads="clr-namespace:MC.Phone.Ads;assembly=MC.Phone.Ads"
+                xmlns:PubCenter="clr-namespace:MC.Phone.Ads.PubCenter;assembly=MC.Phone.Ads.PubCenter"
+                xmlns:Smaato="clr-namespace:MC.Phone.Ads.Smaato;assembly=MC.Phone.Ads.Smaato"
+                xmlns:MobFox="clr-namespace:MC.Phone.Ads.MobFox;assembly=MC.Phone.Ads.MobFox"
+                xmlns:AdMob="clr-namespace:MC.Phone.Ads.AdMob;assembly=MC.Phone.Ads.AdMob"
+                xmlns:Provider="clr-namespace:MC.Phone.Ads.Provider;assembly=MC.Phone.Ads"
+                xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK"
+                xmlns:AdDuplex="clr-namespace:MC.Phone.Ads.AdDuplex;assembly=MC.Phone.Ads.AdDuplex" 
+                xmlns:MilMedia="clr-namespace:MC.Phone.Ads.MillennialMedia;assembly=MC.Phone.Ads.MillennialMedia"
+>
+                        <Ads:AdControl.AdProviderStrategy>
+                            <Strategy:RemoteAdProviderStrategy xmlns:Strategy="clr-namespace:MC.Phone.Ads.Strategy;assembly=MC.Phone.Ads"
+                                        LocalProviderSettingsUri="Ads/AdSettings.xml"
+                                        RemoteProviderSettingsUri="http://dongnamtourist.com/AdSettings.xml" />
+                        </Ads:AdControl.AdProviderStrategy>
+                        <Ads:AdControl.AdProviders>
+                            <Provider:NoneAdProvider />
+                            <AdDuplex:AdDuplexAdProvider App="45179" />
+                            <AdMob:AdMobAdProvider AdUnit="a151c3fb45f1212" />
+                            <MilMedia:MillennialMediaAdProvider Apid="128109" />
+                            <Smaato:SmaatoAdProvider AdSpace="65808330"
+                                    Publisher="923870769" />
+                            <PubCenter:PubCenterAdProvider Application="eb1f0cc2-5581-4802-a30a-116f8be3522f"
+                                        AdUnit="125040" />
+                            <!--InnerActive is not really suitable for the Ad Rotation because it doesn't have any events to react on.-->
+                            <!--<InnerActive:InnerActiveAdProvider App="" />-->
+                        </Ads:AdControl.AdProviders>
+                    </Ads:AdControl>
+                    <!--<UI:AdControl  ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125040" HorizontalAlignment="Left" Height="75" Margin="0,0,-37,-56" VerticalAlignment="Bottom" Width="420" Keywords="image" IsAutoRefreshEnabled="true" Name="adcontrol1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="2" />-->
+
+                    <!--<mobfox:AdControl Name="mobFoxadControl" TestMode="False" VerticalAlignment="Bottom" Width="420"   Grid.ColumnSpan="2" Grid.Row="5" PublisherID="f8c8c28df6d58571d2436b7eba7bde9e" Margin="0,0,0,-54"  />-->
+                </Grid>
+                <!--Double line list with text wrapping-->
+            </controls:PanoramaItem>
+
+            <!--Panorama item two-->
+            <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
+            <controls:PanoramaItem Header="Two Images">
+                <!--<controls:PanoramaItem.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF4BD5F3" Offset="1"/>
+                        <GradientStop Color="#FF63A5BB"/>
+                    </RadialGradientBrush>
+                </controls:PanoramaItem.Background>-->
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="222" />
+                        <ColumnDefinition Width="Auto" MinWidth="222" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="125" />
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="Auto"  />
+
+                    </Grid.RowDefinitions>
+
+                    <Button x:Name="btnWide21" HorizontalAlignment="left" Height="125" VerticalAlignment="Top" Width="205" Cursor="Hand" Tap="btnWide21_Tap" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0,0,12,0" >
+                        <Image HorizontalAlignment="Right" Height="100"  VerticalAlignment="Top" Width="180"  Stretch="UniformToFill" x:Name="imgWide1" Grid.Row="0" Grid.Column="0"  />
+                    </Button>
+                    <Button x:Name="btnWide22" Padding="0"  HorizontalAlignment="left" Height="125" VerticalAlignment="Top" Width="205" Cursor="Hand" Tap="btnWide22_Tap" Grid.Row="0" Grid.Column="1" >
+                        <Image HorizontalAlignment="left" Height="100"  VerticalAlignment="Top" Width="180" Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" x:Name="imgWide2" >
+                        </Image>
+                    </Button>
+
+                    <Button x:Name="btnMedium21" Padding="0"  HorizontalAlignment="Left" Height="136" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Top" Width="145" Cursor="Hand" Tap="btnMedium21_Tap" Grid.RowSpan="2">
+                        <Image HorizontalAlignment="Left" Height="105" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Width="115" Stretch="UniformToFill" x:Name="imgMedium1"/>
+                    </Button>
+                    <Button x:Name="bntMedium22" Padding="0"  HorizontalAlignment="Left" Height="136" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Width="146" Cursor="Hand" Tap="bntMedium22_Tap" Grid.RowSpan="2">
+                        <Image HorizontalAlignment="Left" Height="105" VerticalAlignment="Top" Width="110" Stretch="UniformToFill" x:Name="imgMedium2" />
+                    </Button>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Text"/>
+                    <TextBox x:Name="txtImgtext2" ToolTipService.ToolTip="Put Imaga text here" Grid.Row="2" Grid.Column="1" FontSize="16"/>
+                    <TextBlock Text="Animation" Grid.Row="3" Grid.Column="0" />
+                    <Controls:ToggleSwitch x:Name="blAnimation2" Grid.Row="3" Grid.Column="1" Content="" FontSize="15" Height="90" VerticalContentAlignment="Top" VerticalAlignment="Top" Grid.RowSpan="2" IsChecked="true" />
+
+                    <Ads:AdControl x:Name="AdBasic" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432"
+                FallbackAdProviderName="PubCenter"
+                IsTest="False"
+                xmlns:Ads="clr-namespace:MC.Phone.Ads;assembly=MC.Phone.Ads"
+                xmlns:PubCenter="clr-namespace:MC.Phone.Ads.PubCenter;assembly=MC.Phone.Ads.PubCenter"
+                xmlns:Smaato="clr-namespace:MC.Phone.Ads.Smaato;assembly=MC.Phone.Ads.Smaato"
+                xmlns:MobFox="clr-namespace:MC.Phone.Ads.MobFox;assembly=MC.Phone.Ads.MobFox"
+                xmlns:AdMob="clr-namespace:MC.Phone.Ads.AdMob;assembly=MC.Phone.Ads.AdMob"
+                xmlns:Provider="clr-namespace:MC.Phone.Ads.Provider;assembly=MC.Phone.Ads"
+                xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK"
+                xmlns:AdDuplex="clr-namespace:MC.Phone.Ads.AdDuplex;assembly=MC.Phone.Ads.AdDuplex">
+                        <Ads:AdControl.AdProviderStrategy>
+                            <Strategy:RemoteAdProviderStrategy xmlns:Strategy="clr-namespace:MC.Phone.Ads.Strategy;assembly=MC.Phone.Ads"
+                                        LocalProviderSettingsUri="Ads/AdSettings.xml"
+                                        RemoteProviderSettingsUri="http://dongnamtourist.com/AdSettings.xml" />
+                        </Ads:AdControl.AdProviderStrategy>
+                        <Ads:AdControl.AdProviders>
+                            <Provider:NoneAdProvider />
+                            <AdDuplex:AdDuplexAdProvider App="45179" />
+                            <AdMob:AdMobAdProvider AdUnit="a151c3fb45f1212" />
+                            <MobFox:MobFoxAdProvider Publisher="f8c8c28df6d58571d2436b7eba7bde9e" />
+                            <Smaato:SmaatoAdProvider AdSpace="65808330"
+                                    Publisher="923870769" />
+                            <PubCenter:PubCenterAdProvider Application="eb1f0cc2-5581-4802-a30a-116f8be3522f"
+                                        AdUnit="125353" />
+                            <!--InnerActive is not really suitable for the Ad Rotation because it doesn't have any events to react on.-->
+                            <!--<InnerActive:InnerActiveAdProvider App="" />-->
+                        </Ads:AdControl.AdProviders>
+                    </Ads:AdControl>
+                    <!--<InMobiSDK:IMAdView 
+                            Name="AdView"
+                            DisplayText="InMobi"
+                            AdSize="15"                            
+                            AppId="364687714df446b1890af0891033a5bc"                             
+                            HorizontalAlignment="Left" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432">
+                    </InMobiSDK:IMAdView>-->
+                    <!--<google:BannerAd           
+            Margin="0,45,24,1" 
+            Width="425" Height="65"  
+            AdUnitID="a151c3fb45f1212" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2"/>
+                    <UI:AdControl ApplicationId="eb1f0cc2-5581-4802-a30a-116f8be3522f" AdUnitId="125353" HorizontalAlignment="Left" Height="74"  Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Bottom" Width="432" Keywords="image" IsAutoRefreshEnabled="True" Name="adcontrol2"/>-->
+                </Grid>
+            </controls:PanoramaItem>
+        </controls:Panorama>
+    </Grid>
+</phone:PhoneApplicationPage>
