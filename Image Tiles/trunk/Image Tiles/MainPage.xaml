@@ -21,11 +21,16 @@
     shell:SystemTray.IsVisible="False">
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem IsEnabled="True" Text="Share this" Click="ApplicationBarMenuItem_Click"/>
+                <shell:ApplicationBarMenuItem IsEnabled="True" Text="SMS this" Click="ApplicationBarMenuItem_Click_1" />
+                <shell:ApplicationBarMenuItem IsEnabled="True" Text="Email this" Click="EmailThis_Click"/>
+            </shell:ApplicationBar.MenuItems>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/pin.png" Text="Pin" Click="ApplicationBarIconButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.share.rest.png" Text="Buy (no ads)" Click="BuyButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.favs.rest.png" Text="Rate" Click="RateButton_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.status.rest.png" Text="About" Click="AboutButton_Click"/>
-        </shell:ApplicationBar>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.status.rest.png" Text="About" Click="AboutButton_Click"/>            
+        </shell:ApplicationBar>        
     </phone:PhoneApplicationPage.ApplicationBar>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -100,9 +105,7 @@
                         </Ads:AdControl.AdProviderStrategy>
                         <Ads:AdControl.AdProviders>
                             <Provider:NoneAdProvider />
-                            <AdDuplex:AdDuplexAdProvider App="45179" />
-                            <AdMob:AdMobAdProvider AdUnit="a151c3fb45f1212" />
-                            <MilMedia:MillennialMediaAdProvider Apid="128109" />
+                            <AdDuplex:AdDuplexAdProvider App="45179" />                            
                             <Smaato:SmaatoAdProvider AdSpace="65808330"
                                     Publisher="923870769" />
                             <PubCenter:PubCenterAdProvider Application="eb1f0cc2-5581-4802-a30a-116f8be3522f"
@@ -180,9 +183,7 @@
                         </Ads:AdControl.AdProviderStrategy>
                         <Ads:AdControl.AdProviders>
                             <Provider:NoneAdProvider />
-                            <AdDuplex:AdDuplexAdProvider App="45179" />
-                            <AdMob:AdMobAdProvider AdUnit="a151c3fb45f1212" />
-                            <MobFox:MobFoxAdProvider Publisher="f8c8c28df6d58571d2436b7eba7bde9e" />
+                            <AdDuplex:AdDuplexAdProvider App="45179" />                            
                             <Smaato:SmaatoAdProvider AdSpace="65808330"
                                     Publisher="923870769" />
                             <PubCenter:PubCenterAdProvider Application="eb1f0cc2-5581-4802-a30a-116f8be3522f"
