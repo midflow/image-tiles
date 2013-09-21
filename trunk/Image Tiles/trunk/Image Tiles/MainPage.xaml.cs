@@ -581,6 +581,33 @@ namespace Image_Tiles
         {
             NavigationService.Navigate(new Uri("/About.xaml", UriKind.Relative));
         }
+
+        private void ApplicationBarMenuItem_Click(object sender, EventArgs e)
+        {
+            ShareLinkTask shareLinkTask = new ShareLinkTask();
+
+            shareLinkTask.Title = "Pin your image to home screen";
+            shareLinkTask.LinkUri = new Uri("http://www.windowsphone.com/en-us/store/app/image-tiles/5380010f-5b8a-42be-81e5-b7b45f48b04e", UriKind.Absolute);
+            shareLinkTask.Message = "Here are a nice app to pin your favourite image to start screen for Windows Phone.";
+
+            shareLinkTask.Show();
+        }
+
+        private void ApplicationBarMenuItem_Click_1(object sender, EventArgs e)
+        {
+            SmsComposeTask smsComposeTask = new SmsComposeTask();
+            smsComposeTask.Body = "Here are a nice app to pin your favourite image to start screen for Windows Phone. Click for detail: http://www.windowsphone.com/en-us/store/app/image-tiles/5380010f-5b8a-42be-81e5-b7b45f48b04e";
+            smsComposeTask.Show();
+        }
+
+        private void EmailThis_Click(object sender, EventArgs e)
+        {
+            EmailComposeTask emailtask = new EmailComposeTask();
+            emailtask.Subject = "Pin your image to home screen";
+            emailtask.Body = "Here are a nice app to pin your favourite image to start screen for Windows Phone. Click for detail: http://www.windowsphone.com/en-us/store/app/image-tiles/5380010f-5b8a-42be-81e5-b7b45f48b04e";
+            emailtask.Bcc = "lttrungbk@yahoo.com";
+            emailtask.Show();            
+        }
     }
     public static class ShellTileExt
     {

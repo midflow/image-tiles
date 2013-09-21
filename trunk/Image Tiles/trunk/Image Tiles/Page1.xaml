@@ -44,9 +44,7 @@
             </Ads:AdControl.AdProviderStrategy>
             <Ads:AdControl.AdProviders>
                 <Provider:NoneAdProvider />
-                <AdDuplex:AdDuplexAdProvider App="45179" />
-                <AdMob:AdMobAdProvider AdUnit="a151c3fb45f1212" />
-                <MilMedia:MillennialMediaAdProvider Apid="128109" />
+                <AdDuplex:AdDuplexAdProvider App="45179" />                
                 <Smaato:SmaatoAdProvider AdSpace="65808330"
                                     Publisher="923870769" />
                 <PubCenter:PubCenterAdProvider Application="eb1f0cc2-5581-4802-a30a-116f8be3522f"
